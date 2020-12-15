@@ -73,7 +73,7 @@ exports.Server = class Server {
 
         const packet2 = Buffer.alloc(5);
         packet2.write("PAWN", 0);
-        packet2.writeUInt8(4, client.pawn.networkID);
+        packet2.writeUInt8(client.pawn.networkID, 4);
         this.sendPacketToClient(packet2, client);
 
         return client;

@@ -1,6 +1,7 @@
 const Pawn = require("./class-pawn.js").Pawn;
 const Game = require("./class-game.js").Game;
 const World = require("./class-map.js").Map;
+const Bullet = require("./class-bullet.js").Bullet;
 
 exports.Client = class Client{
 
@@ -14,6 +15,9 @@ exports.Client = class Client{
 			axisV:0,
 			shooting:0,
 		};
+
+
+        this.isShooting = 0;
 
 		this.pawn = null;
 		this.map = null;
@@ -34,6 +38,11 @@ exports.Client = class Client{
 		this.map = new World();
 		game.spawnObject(this.map);
 	}
+	spawnBullet(game, player){
+		this.bullet = new Bullet();
+		this.bullet.position = player.position;
+		game.spawnObject(this.bullet);
+	}
 	update(){
 
 		const game = Game.Singleton;
@@ -44,6 +53,12 @@ exports.Client = class Client{
 
 
 		}
+
+		if(this.isShooting == 1){
+        	//this.spawnBullet(this.game, this.pawn);
+        	console.log("bang");
+        	this.isShooting = 0;
+        }
 	}
 	onPacket(packet, game){
 		if(packet.length < 4) return; // ignore packet
@@ -65,7 +80,7 @@ exports.Client = class Client{
 				
 				// send input to Pawn object:
 				if(this.pawn) this.pawn.input = this.input;
-				if(this.input.shooting == 1) game.isShooting = 1;
+				if(this.input.shooting == 1) this.isShooting = 1;
 				break;
 
 			default:

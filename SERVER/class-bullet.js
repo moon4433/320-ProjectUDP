@@ -16,7 +16,6 @@ exports.Bullet = class Bullet extends NetworkObject{
 	}
 	update(game){
 		// bullet logic...
-		//this.position = game.player.position;
 		this.position.x += this.velocity.x * game.dt;
 	}
 	serialize(){

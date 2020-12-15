@@ -30,7 +30,7 @@ public static class PacketBuilder
 
         }
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
             shooting = 1;
         }
@@ -43,7 +43,7 @@ public static class PacketBuilder
         b.WriteString("INPT", 0);
         b.WriteInt8((sbyte)h, 4);
         b.WriteInt8((sbyte)v, 5);
-        b.WriteInt8((sbyte)shooting, 6);
+        b.WriteInt8((sbyte)shooting, 6); 
 
         return b;
     }
