@@ -12,11 +12,12 @@ exports.Client = class Client{
 		this.input = {
 			axisH:0,
 			axisV:0,
-
+			shooting:0,
 		};
 
 		this.pawn = null;
 		this.map = null;
+		this.bullet = null;
 		this.timeOfLastPacket = Game.Singleton.time; // measured in seconds
 	}
 	spawnPawn(game){
@@ -60,10 +61,11 @@ exports.Client = class Client{
 				
 				this.input.axisH = packet.readInt8(4);
 				this.input.axisV = packet.readInt8(5);
+				this.input.shooting = packet.readInt8(6);
 				
 				// send input to Pawn object:
 				if(this.pawn) this.pawn.input = this.input;
-
+				if(this.input.shooting == 1) game.isShooting = 1;
 				break;
 
 			default:

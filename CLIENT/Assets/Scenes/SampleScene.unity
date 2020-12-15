@@ -729,6 +729,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63f76a7e6e529b14497253171d0ba22d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  connectInterface: {fileID: 180534559}
   ball: {fileID: 0}
 --- !u!114 &871859180
 MonoBehaviour:
@@ -745,6 +746,10 @@ MonoBehaviour:
   prefabs:
   - classID: PAWN
     prefab: {fileID: 1443737195333673994, guid: 5e95f06d337ac1e4c970385c905bffcd, type: 3}
+  - classID: WRLD
+    prefab: {fileID: 1332824577763707005, guid: a8dab7a68ea4cc142b7a4a7882553cd0, type: 3}
+  - classID: BLLT
+    prefab: {fileID: 3794424273574491119, guid: 3d49eacabfe1e364a808c8727b308266, type: 3}
 --- !u!114 &871859181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -917,7 +922,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 919399698}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 180534556}
+        m_TargetAssemblyTypeName: ConnectGUI, Assembly-CSharp
+        m_MethodName: DirectConnect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &919399698
 MonoBehaviour:
   m_ObjectHideFlags: 0

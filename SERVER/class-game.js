@@ -1,9 +1,9 @@
 const Pawn = require("./class-pawn.js").Pawn;
+const Bullet = require("./class-bullet.js").Bullet;
 
 exports.Game = class Game {
 
     static Singleton;
-
 
     constructor(server){
 
@@ -12,6 +12,7 @@ exports.Game = class Game {
         this.frame = 0;
         this.time = 0;
         this.dt = .016;
+        this.isShooting = 0;
         
         this.timeUntilNextStatePacket = 0;
 
@@ -35,7 +36,11 @@ exports.Game = class Game {
         }
 
         if(player){
-        
+        	
+        }
+        if(this.isShooting == 1){
+        	this.spawnBullet(this, this.player);
+        	this.isShooting = 0;
         }
 
         if (this.timeUntilNextStatePacket > 0)
@@ -52,6 +57,11 @@ exports.Game = class Game {
 
         setTimeout(()=> this.update(), 16); // wait 16ms and call update again.
     }
+    spawnBullet(game, player){
+		this.bullet = new Bullet();
+		//this.bullet.position = player.position;
+		game.spawnObject(this.bullet);
+	}
     sendWorldState(){
         const packet = this.makeREPL(true);
         this.server.sendPacketToAll(packet);

@@ -7,6 +7,8 @@ exports.Pawn = class Pawn extends NetworkObject{
 
         this.velocity = {x:0,y:0,z:0};
 
+        this.position = {x:0,y:0,z:0};
+
         this.input = {};
     }
     accelerate(vel, acc, dt){
