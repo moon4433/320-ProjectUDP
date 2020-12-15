@@ -18,6 +18,7 @@ INPT - Current state of the client's input from the player.
 	0	4	ascii		"INPT"
 	4 	1	int8		direction of horizontal input
 	5	1	int8		direction of vertical input
+	6 	1	int8		pressing of shoot input
 
 
 Packets from Server

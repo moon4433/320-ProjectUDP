@@ -20,6 +20,8 @@ public class ClientUDP : MonoBehaviour
 
     public List<RemoteServer> availableGameServers = new List<RemoteServer>();
 
+    public Canvas connectInterface;
+
     /// <summary>
     /// Most recent ball update packet
     /// that has been received...
@@ -56,10 +58,12 @@ public class ClientUDP : MonoBehaviour
         sockSending.Connect(ep);
 
         // set up receive loop (async):
-        //ListenForPackets();
+        // ListenForPackets();
 
         // send a packet to the server (async):
         SendPacket(Buffer.From("JOIN"));
+
+        connectInterface.gameObject.SetActive(false);
     }
 
     /// <summary>

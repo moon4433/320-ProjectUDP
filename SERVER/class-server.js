@@ -1,3 +1,4 @@
+
 const Game = require("./class-game.js").Game;
 const Client = require("./class-client.js").Client;
 const Pawn = require("./class-pawn.js").Pawn;
@@ -59,6 +60,8 @@ exports.Server = class Server {
         const client = new Client(rinfo);
         
         this.clients[key] = client;
+
+        client.spawnMap(this.game);
 
         // depending on scene (and other conditions) spawn Pawn:
         client.spawnPawn(this.game);

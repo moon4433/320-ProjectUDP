@@ -1,5 +1,6 @@
 const Pawn = require("./class-pawn.js").Pawn;
 const Game = require("./class-game.js").Game;
+const World = require("./class-map.js").Map;
 
 exports.Client = class Client{
 
@@ -15,6 +16,7 @@ exports.Client = class Client{
 		};
 
 		this.pawn = null;
+		this.map = null;
 		this.timeOfLastPacket = Game.Singleton.time; // measured in seconds
 	}
 	spawnPawn(game){
@@ -24,6 +26,12 @@ exports.Client = class Client{
 		this.pawn = new Pawn();
 		game.spawnObject( this.pawn );
 			
+	}
+	spawnMap(game){
+		if(this.map) return;
+
+		this.map = new World();
+		game.spawnObject(this.map);
 	}
 	update(){
 
