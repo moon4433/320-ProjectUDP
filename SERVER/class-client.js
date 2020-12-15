@@ -1,47 +1,66 @@
-exports.Client = class Client {
-			constructor(socket, server){
-			this.socket = socket;
-			this.server = server;
-			this.role = 0;
-			this.username = "Unknown";
+const Pawn = require("./class-pawn.js").Pawn;
+const Game = require("./class-game.js").Game;
 
-			this.buffer = Buffer.alloc(0);
+exports.Client = class Client{
 
-			this.socket.on("error",e=>this.onError(e));
-			this.socket.on("close",()=>this.onClose());
-			this.socket.on("message",d=>this.onMessage(d));
-		}
+	static TIMEOUT = 8;
 
-		onError(errmsg){
-			console.log("ERROR:" + errmsg);
+	constructor(rinfo){
 
-		}
+		this.rinfo = rinfo;
+		this.input = {
+			axisH:0,
+			axisV:0,
 
-		onClose(){
-			this.server.onClientDisonnect(this);
+		};
 
-		}
+		this.pawn = null;
+		this.timeOfLastPacket = Game.Singleton.time; // measured in seconds
+	}
+	spawnPawn(game){
 
-		onMessage(data){
+		if(this.pawn) return; // if pawn exist, do nothing....
+
+		this.pawn = new Pawn();
+		game.spawnObject( this.pawn );
 			
-			//console.log(this.buffer);
-			console.log("data recived");
+	}
+	update(){
 
-			if(this.buffer.length < 4) return; // not enough data
+		const game = Game.Singleton;
 
-			const packetIdentifier = data.slice(0,4).toString();
+		if(game.time > this.timeOfLastPacket + Client.TIMEOUT){
+			
+			game.server.disconnectClient(this);
 
-			console.log("packet identifyer: " + packetIdentifier);
 
-			switch(packetIdentifier){
+		}
+	}
+	onPacket(packet, game){
+		if(packet.length < 4) return; // ignore packet
+		const packetID = packet.slice(0,4).toString();
+
+		this.timeOfLastPacket = game.time;
+
+		switch(packetID){
+
+			// TODO: handle other kinds of packets.....
+
+			case "INPT":
+
+				if(packet.length < 6) return;
 				
-				default:
-					console.log("ERROR: packet identifyer not recognised (" +packetIdentifier+")");
-					break;
-			}
+				this.input.axisH = packet.readInt8(4);
+				this.input.axisV = packet.readInt8(5);
+				
+				// send input to Pawn object:
+				if(this.pawn) this.pawn.input = this.input;
+
+				break;
+
+			default:
+				console.log("ERROR: packet type not recognized");
+				break;
 		}
-		sendPacket(packet){
-			console.log("sending packet: " + packet);
-			this.socket.write(packet);
-		}
+	}
 }
